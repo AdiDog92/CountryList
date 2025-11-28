@@ -3,6 +3,7 @@ package practice;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+
 public class Main {
     public static void main(String[] args) {
 
@@ -26,9 +27,9 @@ public class Main {
 
         while (canWork) {
             System.out.println("Введите команду");
-            System.out.println("- create - создать страну");
-            System.out.println("- print - распечатать данные");
-            System.out.println("- exit - завершить работу программы");
+            System.out.println("-" + create + " - создать страну");
+            System.out.println("-" + print + " - распечатать данные");
+            System.out.println("-" + exit + " - завершить работу программы");
 
             String command = scanner.nextLine().toLowerCase();
 
@@ -45,35 +46,29 @@ public class Main {
 
                 boolean validArea = false;
                 double area = 0;
-                boolean validPopulation = false;
                 long population = 0;
-                boolean validCapitalPopulation = false;
                 long capitalPopulation = 0;
+                boolean validCapitalPopulation = false;
+                boolean validPopulation = false;
 
                 System.out.println("Введите название страны:");
                 String name = scanner.nextLine();
 
                 while (!validArea) {
                     try {
-                        System.out.println("Введите площать (км²):");
-                        area = scanner.nextDouble();
-                        scanner.nextLine();
+                        area = (Double) readInput("Введите площать (км²):", scanner, "double");
                         validArea = true;
                     } catch (InputMismatchException e) {
-                        System.out.println("Ошибка! Нужно ввести число. Попробуйте снова:");
-                        scanner.nextLine();
+                        showError(scanner, "Ошибка! Нужно ввести число типа double. Попробуйте снова:");
                     }
                 }
 
                 while (!validPopulation) {
                     try {
-                        System.out.println("Введите население:");
-                        population = scanner.nextLong();
-                        scanner.nextLine();
+                        population = (Long) readInput("Введите население:", scanner, "long");
                         validPopulation = true;
                     } catch (InputMismatchException e) {
-                        System.out.println("Ошибка! Нужно ввести число. Попробуйте снова:");
-                        scanner.nextLine();
+                        showError(scanner, "Ошибка! Нужно ввести число типа long. Попробуйте снова:");
                     }
                 }
 
@@ -86,12 +81,10 @@ public class Main {
 
                     while (!validCapitalPopulation) {
                         try {
-                            System.out.println("Введите население столицы:");
-                            capitalPopulation = scanner.nextLong();
-                            scanner.nextLine();
+                            capitalPopulation = (Long) readInput("Введите население столицы:", scanner, "long");
+                            validCapitalPopulation = true;
                         } catch (InputMismatchException e) {
-                            System.out.println("Ошибка! Нужно ввести число. Попробуйте снова:");
-                            scanner.nextLine();
+                            showError(scanner, "Ошибка! Нужно ввести число типа long. Попробуйте снова:");
                         }
                     }
 
@@ -109,13 +102,32 @@ public class Main {
                 System.out.println("Неизвестная команда. Доступные: create, print, exit");
             }
         }
+
+        scanner.close();
     }
 
-    public static void printAll(Country[] countries) {
+    private static void printAll(Country[] countries) {
         for (int i = 0; i < countries.length; i++) {
             if (countries[i] != null) {
                 System.out.println(countries[i].toString());
             }
         }
+    }
+
+    private static Object readInput(String message, Scanner scanner, String type) {
+        System.out.println(message);
+        Object value = switch (type.toLowerCase()) {
+            case "double" -> scanner.nextDouble();
+            case "long" -> scanner.nextLong();
+            default -> throw new IllegalArgumentException("тип не поддерживается");
+        };
+
+        scanner.nextLine();
+        return value;
+    }
+
+    private static void showError(Scanner scanner, String message) {
+        System.out.println(message);
+        scanner.nextLine();
     }
 }

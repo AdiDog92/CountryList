@@ -1,11 +1,29 @@
 package practice;
 
+
+/**
+ * Класс представляющий страну
+ * Содержит
+ * - Название страны
+ * - Площадь
+ * - Население
+ * - Столицу -> опционально
+ * - Население столицы -> опционально
+ */
 public class Country {
     private String name;
     private double area;
     private long population;
     private String capitalName;
     private long capitalPopulation;
+
+
+    public Country(String name, double area, long population) {
+        setName(name);
+        setArea(area);
+        setPopulation(population);
+        setCapital(null, 0);
+    }
 
     public Country(String name, double area, long population, String capitalName, long capitalPopulation) {
         setName(name);
@@ -18,13 +36,6 @@ public class Country {
 
         this.capitalName = capitalName;
         this.capitalPopulation = capitalPopulation;
-    }
-
-    public Country(String name, double area, long population) {
-        setName(name);
-        setArea(area);
-        setPopulation(population);
-        setCapital(null, 0);
     }
 
     public String getName() {
